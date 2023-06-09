@@ -18,8 +18,6 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", default="medium", help="Model to use",
                         choices=["tiny", "base", "small", "medium", "large"])
-    parser.add_argument("--non_english", action='store_true',
-                        help="Don't use the english model.")
     parser.add_argument("--energy_threshold", default=1000,
                         help="Energy level for mic to detect.", type=int)
     parser.add_argument("--record_timeout", default=2,
@@ -63,10 +61,7 @@ def main():
         source = sr.Microphone(sample_rate=16000)
         
     # Load / Download model
-    model = args.model
-    if args.model != "large" and not args.non_english:
-        model = model + ".en"
-    audio_model = whisper.load_model(model)
+    audio_model = whisper.load_model(args.model)
 
     record_timeout = args.record_timeout
     phrase_timeout = args.phrase_timeout
